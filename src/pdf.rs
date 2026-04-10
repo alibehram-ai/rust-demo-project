@@ -68,7 +68,7 @@ pub fn generate_pdf(invoice: &InvoiceResponse, user_name: &str) -> Result<Vec<u8
     );
 
     // Items table header
-    let mut y = 204.0_f64;
+    let mut y: f32 = 204.0;
     layer.use_text("Description", 10.0, Mm(20.0), Mm(y), &font_bold);
     layer.use_text("Qty", 10.0, Mm(110.0), Mm(y), &font_bold);
     layer.use_text("Unit Price", 10.0, Mm(135.0), Mm(y), &font_bold);
@@ -76,18 +76,15 @@ pub fn generate_pdf(invoice: &InvoiceResponse, user_name: &str) -> Result<Vec<u8
     y -= 2.0;
 
     // Divider line
-    let points = vec![
+    let line_points = vec![
         (Point::new(Mm(20.0), Mm(y)), false),
         (Point::new(Mm(190.0), Mm(y)), false),
     ];
     let line = Line {
-        points,
+        points: line_points,
         is_closed: false,
-        has_fill: false,
-        has_stroke: true,
-        is_clipping_path: false,
     };
-    layer.add_shape(line);
+    layer.add_line(line);
     y -= 6.0;
 
     // Items rows
@@ -113,18 +110,15 @@ pub fn generate_pdf(invoice: &InvoiceResponse, user_name: &str) -> Result<Vec<u8
 
     // Totals section
     y -= 4.0;
-    let points = vec![
+    let line_points = vec![
         (Point::new(Mm(130.0), Mm(y)), false),
         (Point::new(Mm(190.0), Mm(y)), false),
     ];
     let line = Line {
-        points,
+        points: line_points,
         is_closed: false,
-        has_fill: false,
-        has_stroke: true,
-        is_clipping_path: false,
     };
-    layer.add_shape(line);
+    layer.add_line(line);
     y -= 6.0;
 
     layer.use_text("Subtotal:", 10.0, Mm(135.0), Mm(y), &font);
